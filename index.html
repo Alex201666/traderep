@@ -52,7 +52,7 @@
     <!-- Header -->
     <header>
       <div>
-        <h1><i data-lucide="line-chart"></i> Metales Portfolio</h1>
+        <h1><i data-lucide="line-chart"></i> Portfolio</h1>
         <p>Evolución de inversión en tiempo real • Trade Republic</p>
       </div>
       <div id="live-badge" class="badge-live">
@@ -135,23 +135,22 @@
 
     <!-- Notas del inversor -->
     <section class="glass-card">
-      <h2 class="notes-title"><i data-lucide="message-square" style="color: var(--gold)"></i> Notas del Inversor</h2>
+      <h2 class="notes-title"><i data-lucide="message-square" style="color: var(--gold)"></i> Notas del Inversor actualizado a 23 de Mayo de 2026</h2>
       <div class="notes-text">
         <!-- ================================================================= -->
         <!-- NOTAS / COMENTARIOS: Modifica este texto libremente de aquí abajo -->
         <!-- ================================================================= -->
-        Hola grupo, aquí podéis ver el estado de nuestra cartera en Trade Republic. 
-        Comenzamos el 6 de mayo de 2026 aportando 10.000€ en total donde invertí Oro, plata y venia con una posición de unos 1.000 euros en palantir. 
-        <br>
-        <br>El 13 de mayo vendimos todas las posiciones con una rentabilidad de +443€ de esos 10.000 iniciales, y el 15 de mayo volvimos a reinvertir el capital en oro y plata física aprovechando una corrección del mercado que preveia. 
-        <br>
-        <br>La web se actualiza con los precios internacionales del mercado y muestra cómo fluctúa la cartera minuto a minuto.
+       Hola grupo, aquí podéis ver el estado de nuestra cartera en Trade Republic. 
+       <br><br>Comenzamos el 6 de mayo de 2026 aportando 10.000€ en total donde invertí Oro, plata y venia con una posición de unos 1.000 euros en palantir.
+       <br><br>El 13 de mayo vendimos todas las posiciones con una rentabilidad de +443€ de esos 10.000 iniciales, y el 15 de mayo volvimos a reinvertir el capital en oro y plata física aprovechando una corrección del mercado que preveia.
+       <br><br>La web se actualiza con los precios internacionales del mercado y muestra cómo fluctúa la cartera minuto a minuto.
+       <br><br>La idea es batir al interés compuesto, al final hay un par de tablas con y sin aportaciones mensuales teniendo en cuenta el interés compuesto anual del 7%
         <!-- ================================================================= -->
       </div>
     </section>
 
     <!-- Historial de Transacciones -->
-    <section class="glass-card" style="margin-top: 1.5rem;">
+    <section class="glass-card">
       <h2 class="notes-title" style="border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;"><i data-lucide="history" style="color: var(--cash)"></i> Historial de Movimientos</h2>
       <div style="overflow-x: auto; margin-top: 1rem;">
         <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem;">
@@ -206,8 +205,61 @@
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
+    <!-- Comparativa Inversión Pasiva -->
+    <section class="glass-card" style="margin-top: 1.5rem;">
+      <h2 class="notes-title"><i data-lucide="scale" style="color: var(--cash)"></i> Comparativa: Inversión Pasiva (7% TAE)</h2>
+      <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
+        Evolución de tus 10.000€ iniciales bajo un interés compuesto anual pasivo del 7% y comparación en tiempo real con tu rentabilidad actual.
+      </p>
+
+      <!-- Cuadro comparativo en vivo -->
+      <div style="background: rgba(6, 182, 212, 0.05); border: 1px solid rgba(6, 182, 212, 0.15); border-radius: 12px; padding: 1.25rem; margin-bottom: 1.5rem; font-size: 0.95rem; line-height: 1.5;">
+        <span id="comparison-highlight">Calculando comparativa en vivo...</span>
+      </div>
+<!-- Tabla de proyección a 30 años sin aportes mensuales -->
+<div class="tables-grid">
+  <div class="table-wrapper">
+    <h3 style="margin-bottom:0.5rem;">Sin aportes mensuales</h3>
+    <div style="max-height:250px; overflow-y:auto; border:1px solid var(--border-color); border-radius:10px;">
+      <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
+        <thead style="position:sticky; top:0; background:#0f1322; z-index:1;">
+          <tr style="border-bottom:1px solid var(--border-color); color:var(--text-secondary); height:2.5rem;">
+            <th style="padding:0.75rem 1rem;">Año</th>
+            <th style="padding:0.75rem 1rem;">Capital Estimado</th>
+            <th style="padding:0.75rem 1rem;">Ganancia Acumulada</th>
+            <th style="padding:0.75rem 1rem;">Rentabilidad Total</th>
+          </tr>
+        </thead>
+        <tbody id="compound-table-body-no-contrib">
+          <!-- rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="table-wrapper">
+    <h3 style="margin-bottom:0.5rem;">Aportes mensuales de 100 €</h3>
+    <div style="max-height:250px; overflow-y:auto; border:1px solid var(--border-color); border-radius:10px;">
+      <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
+        <thead style="position:sticky; top:0; background:#0f1322; z-index:1;">
+          <tr style="border-bottom:1px solid var(--border-color); color:var(--text-secondary); height:2.5rem;">
+            <th style="padding:0.75rem 1rem;">Año</th>
+            <th style="padding:0.75rem 1rem;">Capital Estimado</th>
+            <th style="padding:0.75rem 1rem;">Ganancia Acumulada</th>
+            <th style="padding:0.75rem 1rem;">Rentabilidad Total</th>
+          </tr>
+        </thead>
+        <tbody id="compound-table-body-contrib">
+          <!-- rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+      
+    </section>
+<footer>
       <p>© 2026 Monitor de Cartera Privada • Actualización automática cada 60 segundos</p>
     </footer>
   </div>
@@ -320,6 +372,60 @@
       });
     }
 
+    // Tabla sin aportes mensuales (solo 7% anual)
+    function generarTablaCompuesta() {
+      const tbody = document.getElementById('compound-table-body-no-contrib');
+      tbody.innerHTML = '';
+      const tasaAnual = 0.07;
+
+      for (let anio = 1; anio <= 30; anio++) {
+        const capitalEstimado = CAPITAL_INICIAL_TOTAL * Math.pow(1 + tasaAnual, anio);
+        const gananciaAcumulada = capitalEstimado - CAPITAL_INICIAL_TOTAL;
+        const rentabilidadAcumulada = (gananciaAcumulada / CAPITAL_INICIAL_TOTAL) * 100;
+
+        const row = document.createElement('tr');
+        row.style.borderBottom = '1px solid var(--border-color)';
+        row.style.height = '2.5rem';
+        row.innerHTML = `
+          <td style="padding: 0.75rem 1rem;"><strong>Año ${anio}</strong></td>
+          <td style="padding: 0.75rem 1rem;">${formatEuro(capitalEstimado)}</td>
+          <td style="padding: 0.75rem 1rem; color: var(--profit); font-weight: 600;">+${formatEuro(gananciaAcumulada)}</td>
+          <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">+${rentabilidadAcumulada.toFixed(0)}%</td>
+        `;
+        tbody.appendChild(row);
+      }
+    }
+
+    // Nueva tabla con aporte mensual de 100 €
+    function generarTablaConAporte() {
+      const tbody = document.getElementById('compound-table-body-contrib');
+      tbody.innerHTML = '';
+      const tasaAnual = 0.07;
+      const aporteMensual = 100; // euros
+      const mesesPorAno = 12;
+
+      for (let anio = 1; anio <= 30; anio++) {
+        const totalMeses = anio * mesesPorAno;
+        const tasaMensual = Math.pow(1 + tasaAnual, 1 / mesesPorAno) - 1;
+        // Fórmula de valor futuro de una anualidad ordinaria
+        const capitalEstimado = (CAPITAL_INICIAL_TOTAL * Math.pow(1 + tasaAnual, anio)) + aporteMensual * ((Math.pow(1 + tasaMensual, totalMeses) - 1) / tasaMensual);
+        const totalInvertido = CAPITAL_INICIAL_TOTAL + (aporteMensual * totalMeses);
+        const gananciaAcumulada = capitalEstimado - totalInvertido;
+        const rentabilidadAcumulada = (gananciaAcumulada / totalInvertido) * 100;
+
+        const row = document.createElement('tr');
+        row.style.borderBottom = '1px solid var(--border-color)';
+        row.style.height = '2.5rem';
+        row.innerHTML = `
+          <td style="padding: 0.75rem 1rem;"><strong>Año ${anio}</strong></td>
+          <td style="padding: 0.75rem 1rem;">${formatEuro(capitalEstimado)}</td>
+          <td style="padding: 0.75rem 1rem; color: var(--profit); font-weight: 600;">+${formatEuro(gananciaAcumulada)}</td>
+          <td style="padding: 0.75rem 1rem; color: var(--text-secondary);">+${rentabilidadAcumulada.toFixed(0)}%</td>
+        `;
+        tbody.appendChild(row);
+      }
+    }
+
     async function actualizarCartera() {
       try {
         // 1. Obtener tipo de cambio USD/EUR
@@ -428,6 +534,27 @@
         // Dibujar/Actualizar gráfico con el último punto en tiempo real
         dibujarGrafico(valorTotal, fechaActualStr);
 
+        // ---- CÁLCULO COMPARATIVO ACTIVO VS BENCHMARK PASIVO (7% TAE) ----
+        const fechaInicio = new Date("2026-05-06");
+        const diffTime = Math.abs(hoy - fechaInicio);
+        const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+        
+        // Interés compuesto correspondiente a los días transcurridos
+        // tasaDiaria = (1.07)^(1/365.25) - 1
+        const tasaAcumuladaPasiva = Math.pow(1.07, diffDays / 365.25) - 1;
+        const valorPasivoActual = CAPITAL_INICIAL_TOTAL * (1 + tasaAcumuladaPasiva);
+        const gananciaPasivaActualEUR = valorPasivoActual - CAPITAL_INICIAL_TOTAL;
+        
+        // Comparación (Alpha/Diferencial)
+        const diferencialEUR = valorTotal - valorPasivoActual;
+        const compEl = document.getElementById('comparison-highlight');
+        
+        if (diferencialEUR >= 0) {
+          compEl.innerHTML = `🔥 <strong>Estrategia Activa vs. Pasiva:</strong> En <strong>${diffDays} días</strong> de trayectoria, tu cartera acumula un retorno de <span style="color:var(--profit); font-weight:bold;">${formatPercent(gananciaTotalPct)} (${formatEuro(gananciaTotalEUR)})</span>. Una inversión indexada pasiva al 7% TAE habría acumulado un <span style="color:var(--profit); font-weight:600;">${formatPercent(tasaAcumuladaPasiva * 100)} (${formatEuro(gananciaPasivaActualEUR)})</span>. ¡Vas superando al mercado indexado en <span style="color:var(--profit); font-weight:bold;">${formatEuro(diferencialEUR)}</span>!`;
+        } else {
+          compEl.innerHTML = `⚠️ <strong>Estrategia Activa vs. Pasiva:</strong> En <strong>${diffDays} días</strong> de trayectoria, tu cartera acumula un retorno de <span style="color:${gananciaTotalEUR >= 0 ? 'var(--profit)' : 'var(--loss)'}; font-weight:bold;">${formatPercent(gananciaTotalPct)} (${formatEuro(gananciaTotalEUR)})</span>. Una inversión indexada pasiva al 7% TAE habría acumulado un <span style="color:var(--profit); font-weight:600;">${formatPercent(tasaAcumuladaPasiva * 100)} (${formatEuro(gananciaPasivaActualEUR)})</span>. Vas por detrás del índice pasivo por <span style="color:var(--loss); font-weight:bold;">${formatEuro(Math.abs(diferencialEUR))}</span>.`;
+        }
+
       } catch (error) {
         console.error('Error calculando la cartera en vivo:', error);
         document.getElementById('portfolio-profit').innerText = 'Error al obtener precios en tiempo real.';
@@ -437,6 +564,8 @@
     // Cargar e iniciar bucle de refresco
     window.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
+      generarTablaCompuesta();
+      generarTablaConAporte();
       actualizarCartera();
       setInterval(actualizarCartera, 60000);
     });
