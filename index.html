@@ -17,10 +17,16 @@
   <!-- Modifica estos valores cuando hagas nuevos movimientos.           -->
   <!-- ================================================================= -->
   <script>
-    // 1. Capital invertido originalmente al principio de todo (6 de mayo):
-    const CAPITAL_INICIAL_TOTAL = 10000.00;
+    // 1. Aportaciones de capital (dinero NUEVO que metes; no cuenta reinvertir lo que ya tenías).
+    // Cada aportación se compara contra el 7% pasivo desde SU PROPIA fecha, así meter dinero
+    // nuevo más adelante no desvirtúa el % de rentabilidad acumulado de lo anterior.
+    const APORTACIONES = [
+      { fecha: "2026-05-06", monto: 10000.00 }, // Capital inicial (Oro + Plata + Palantir)
+      { fecha: "2026-08-25", monto: 4958.71 }   // Capital nuevo: Cocoa + Café
+    ];
+    const CAPITAL_TOTAL_APORTADO = APORTACIONES.reduce((sum, a) => sum + a.monto, 0);
 
-    // 2. Transacciones activas actuales (compradas el 15 de mayo):
+    // 2. Transacciones activas actuales - Oro y Plata (compradas el 15 de mayo):
     const UNIDADES_ORO_ETC = 68.78;         // Unidades de iShares Physical Gold
     const PRECIO_COMPRA_ORO_ETC = 75.95;    // Precio de compra en EUR por unidad
     const TOTAL_COMPRA_ORO_EUR = 5225.00;   // Monto total invertido en Oro
@@ -28,6 +34,22 @@
     const UNIDADES_PLATA_ETC = 82.88;       // Unidades de iShares Physical Silver
     const PRECIO_COMPRA_PLATA_ETC = 63.34;  // Precio de compra en EUR por unidad
     const TOTAL_COMPRA_PLATA_EUR = 5251.00;  // Monto total invertido en Plata
+
+    // 2b. Transacciones activas actuales - Cocoa y Café (compradas el 25 de agosto):
+    // OJO: a diferencia del oro/plata, no hay ninguna fuente de precio en vivo gratuita para
+    // estos dos ETCs (cotizan en Londres/Xetra). Actualiza tú mismo el precio y la fecha de
+    // abajo cada vez que mires la cotización real en Trade Republic.
+    const UNIDADES_COCOA = 311.75;              // Unidades de Cocoa USD
+    const PRECIO_COMPRA_COCOA = 8.019;          // Precio de compra en EUR por unidad
+    const TOTAL_COMPRA_COCOA_EUR = 2499.92;     // Monto total invertido en Cocoa
+    const PRECIO_ACTUAL_COCOA_EUR = 8.019;      // <-- ACTUALIZA ESTO A MANO
+    const FECHA_ACTUALIZACION_COCOA = "2026-08-25"; // <-- y esto (YYYY-MM-DD)
+
+    const UNIDADES_CAFE = 37.88;                // Unidades de WisdomTree Coffee ETC USD
+    const PRECIO_COMPRA_CAFE = 64.91;           // Precio de compra en EUR por unidad
+    const TOTAL_COMPRA_CAFE_EUR = 2458.79;      // Monto total invertido en Café
+    const PRECIO_ACTUAL_CAFE_EUR = 64.91;       // <-- ACTUALIZA ESTO A MANO
+    const FECHA_ACTUALIZACION_CAFE = "2026-08-25"; // <-- y esto (YYYY-MM-DD)
 
     // 3. Baselines de spot de metales el 15 de mayo (Calibrado para coincidir al céntimo con tu balance de mercado cerrado)
     const SPOT_ORO_REF_EUR = 3948.74;       // Precio de spot del oro de referencia
@@ -131,11 +153,65 @@
           </div>
         </div>
       </div>
+
+      <!-- Cocoa Card -->
+      <div class="glass-card asset-card">
+        <div class="asset-header">
+          <span class="asset-name"><i data-lucide="cookie" class="cocoa-text" style="vertical-align: middle;"></i> Cocoa USD</span>
+          <span id="cocoa-etc-price" class="detail-val cocoa-text">€0,00</span>
+        </div>
+        <div class="asset-details">
+          <div class="detail-row">
+            <span class="detail-label">Cantidad:</span>
+            <span class="detail-val" id="cocoa-qty">0,00 ud</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Precio Compra:</span>
+            <span class="detail-val" id="cocoa-buy-price">€0,00</span>
+          </div>
+          <div class="detail-row" style="border-top: 1px solid rgba(255,255,255,0.04); padding-top: 0.5rem; margin-top: 0.25rem;">
+            <span class="detail-label">Valor Actual:</span>
+            <span class="detail-val" id="cocoa-current-value">€0,00</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Rendimiento:</span>
+            <span class="detail-val" id="cocoa-profit">€0,00 (0.00%)</span>
+          </div>
+          <div class="manual-tag" id="cocoa-updated">Precio manual</div>
+        </div>
+      </div>
+
+      <!-- Café Card -->
+      <div class="glass-card asset-card">
+        <div class="asset-header">
+          <span class="asset-name"><i data-lucide="coffee" class="cafe-text" style="vertical-align: middle;"></i> WisdomTree Coffee ETC</span>
+          <span id="cafe-etc-price" class="detail-val cafe-text">€0,00</span>
+        </div>
+        <div class="asset-details">
+          <div class="detail-row">
+            <span class="detail-label">Cantidad:</span>
+            <span class="detail-val" id="cafe-qty">0,00 ud</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Precio Compra:</span>
+            <span class="detail-val" id="cafe-buy-price">€0,00</span>
+          </div>
+          <div class="detail-row" style="border-top: 1px solid rgba(255,255,255,0.04); padding-top: 0.5rem; margin-top: 0.25rem;">
+            <span class="detail-label">Valor Actual:</span>
+            <span class="detail-val" id="cafe-current-value">€0,00</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Rendimiento:</span>
+            <span class="detail-val" id="cafe-profit">€0,00 (0.00%)</span>
+          </div>
+          <div class="manual-tag" id="cafe-updated">Precio manual</div>
+        </div>
+      </div>
     </section>
 
     <!-- Notas del inversor -->
     <section class="glass-card">
-      <h2 class="notes-title"><i data-lucide="message-square" style="color: var(--gold)"></i> Notas del Inversor actualizado a 23 de Mayo de 2026</h2>
+      <h2 class="notes-title"><i data-lucide="message-square" style="color: var(--gold)"></i> Notas del Inversor actualizado a 25 de Agosto de 2026</h2>
       <div class="notes-text">
         <!-- ================================================================= -->
         <!-- NOTAS / COMENTARIOS: Modifica este texto libremente de aquí abajo -->
@@ -143,7 +219,8 @@
        Hola grupo, aquí podéis ver el estado de nuestra cartera en Trade Republic. 
        <br><br>Comenzamos el 6 de mayo de 2026 aportando 10.000€ en total donde invertí Oro, plata y venia con una posición de unos 1.000 euros en palantir.
        <br><br>El 13 de mayo vendimos todas las posiciones con una rentabilidad de +443€ de esos 10.000 iniciales, y el 15 de mayo volvimos a reinvertir el capital en oro y plata física aprovechando una corrección del mercado que preveia.
-       <br><br>La web se actualiza con los precios internacionales del mercado y muestra cómo fluctúa la cartera minuto a minuto.
+       <br><br>Hoy, 25 de agosto de 2026, he metido capital nuevo (no toqué el oro ni la plata) para diversificar: 2.499,92€ en Cocoa USD y 2.458,79€ en WisdomTree Coffee ETC USD.
+       <br><br>La web se actualiza con los precios internacionales del mercado y muestra cómo fluctúa la cartera minuto a minuto. Ojo: el precio de Cocoa y Café los actualizo yo a mano de vez en cuando (no hay una fuente gratuita en vivo para esos dos), veréis la fecha de la última actualización en su tarjeta.
        <br><br>La idea es batir al interés compuesto, al final hay un par de tablas con y sin aportaciones mensuales teniendo en cuenta el interés compuesto anual del 7%
         <!-- ================================================================= -->
       </div>
@@ -193,12 +270,22 @@
               <td><strong>10.476,00 €</strong></td>
               <td>Reinversión Activa</td>
             </tr>
+            <tr style="border-bottom: 1px solid var(--border-color); height: 3.5rem;">
+              <td><strong>25 Ago 2026</strong></td>
+              <td><span style="color: var(--profit); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Compra</span></td>
+              <td style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.3;">
+                Cocoa USD: 311,75 ud @ 8,019€ (2.499,92€)<br>
+                Café ETC: 37,88 ud @ 64,91€ (2.458,79€)
+              </td>
+              <td><strong>4.958,71 €</strong></td>
+              <td>Capital Nuevo (diversificación)</td>
+            </tr>
             <tr style="height: 3.5rem;">
-              <td><strong>23 May 2026</strong></td>
+              <td><strong>25 Ago 2026</strong></td>
               <td><span style="color: var(--gold); background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">En cartera</span></td>
-              <td style="color: var(--text-secondary); font-size: 0.82rem;">Oro ETC: 68,78 ud / Plata ETC: 82,88 ud</td>
-              <td><strong id="history-total-value">10.304,55 €</strong></td>
-              <td style="color: var(--profit); font-weight: 600;" id="history-total-profit">+304,55 € (+3,05%)</td>
+              <td style="color: var(--text-secondary); font-size: 0.82rem;">Oro: 68,78 ud / Plata: 82,88 ud / Cocoa: 311,75 ud / Café: 37,88 ud</td>
+              <td><strong id="history-total-value">0,00 €</strong></td>
+              <td style="color: var(--profit); font-weight: 600;" id="history-total-profit">+0,00 € (+0,00%)</td>
             </tr>
           </tbody>
         </table>
@@ -270,6 +357,10 @@
     const formatPercent = (val) => {
       const sign = val >= 0 ? '+' : '';
       return `${sign}${val.toFixed(2)}%`;
+    };
+    const formatFecha = (fechaStr) => {
+      const [y, m, d] = fechaStr.split('-');
+      return `${d}/${m}/${y}`;
     };
 
     let chartInstance = null;
@@ -379,9 +470,9 @@
       const tasaAnual = 0.07;
 
       for (let anio = 1; anio <= 30; anio++) {
-        const capitalEstimado = CAPITAL_INICIAL_TOTAL * Math.pow(1 + tasaAnual, anio);
-        const gananciaAcumulada = capitalEstimado - CAPITAL_INICIAL_TOTAL;
-        const rentabilidadAcumulada = (gananciaAcumulada / CAPITAL_INICIAL_TOTAL) * 100;
+        const capitalEstimado = CAPITAL_TOTAL_APORTADO * Math.pow(1 + tasaAnual, anio);
+        const gananciaAcumulada = capitalEstimado - CAPITAL_TOTAL_APORTADO;
+        const rentabilidadAcumulada = (gananciaAcumulada / CAPITAL_TOTAL_APORTADO) * 100;
 
         const row = document.createElement('tr');
         row.style.borderBottom = '1px solid var(--border-color)';
@@ -408,8 +499,8 @@
         const totalMeses = anio * mesesPorAno;
         const tasaMensual = Math.pow(1 + tasaAnual, 1 / mesesPorAno) - 1;
         // Fórmula de valor futuro de una anualidad ordinaria
-        const capitalEstimado = (CAPITAL_INICIAL_TOTAL * Math.pow(1 + tasaAnual, anio)) + aporteMensual * ((Math.pow(1 + tasaMensual, totalMeses) - 1) / tasaMensual);
-        const totalInvertido = CAPITAL_INICIAL_TOTAL + (aporteMensual * totalMeses);
+        const capitalEstimado = (CAPITAL_TOTAL_APORTADO * Math.pow(1 + tasaAnual, anio)) + aporteMensual * ((Math.pow(1 + tasaMensual, totalMeses) - 1) / tasaMensual);
+        const totalInvertido = CAPITAL_TOTAL_APORTADO + (aporteMensual * totalMeses);
         const gananciaAcumulada = capitalEstimado - totalInvertido;
         const rentabilidadAcumulada = (gananciaAcumulada / totalInvertido) * 100;
 
@@ -445,6 +536,8 @@
         let valorTotal = 0;
         let valorOro = 0;
         let valorPlata = 0;
+        let valorCocoa = 0;
+        let valorCafe = 0;
         let precioActualOroETC = 0;
         let precioActualPlataETC = 0;
 
@@ -468,7 +561,12 @@
 
           valorOro = UNIDADES_ORO_ETC * precioActualOroETC;
           valorPlata = UNIDADES_PLATA_ETC * precioActualPlataETC;
-          valorTotal = valorOro + valorPlata;
+
+          // Cocoa y Café usan el precio manual (no hay fuente en vivo gratuita para estos dos)
+          valorCocoa = UNIDADES_COCOA * PRECIO_ACTUAL_COCOA_EUR;
+          valorCafe = UNIDADES_CAFE * PRECIO_ACTUAL_CAFE_EUR;
+
+          valorTotal = valorOro + valorPlata + valorCocoa + valorCafe;
 
           // Rellenar valores de Oro en la interfaz
           document.getElementById('gold-etc-price').innerText = `${formatEuro(precioActualOroETC)}`;
@@ -493,13 +591,39 @@
           const profitPlataEl = document.getElementById('silver-profit');
           profitPlataEl.innerText = `${formatEuro(profitPlataEUR)} (${formatPercent(profitPlataPct)})`;
           profitPlataEl.className = `detail-val ${profitPlataEUR >= 0 ? 'trend-up' : 'trend-down'}`;
+
+          // Rellenar valores de Cocoa en la interfaz (precio manual)
+          document.getElementById('cocoa-etc-price').innerText = `${formatEuro(PRECIO_ACTUAL_COCOA_EUR)}`;
+          document.getElementById('cocoa-qty').innerText = `${UNIDADES_COCOA.toLocaleString('es-ES')} ud`;
+          document.getElementById('cocoa-buy-price').innerText = `${formatEuro(PRECIO_COMPRA_COCOA)}`;
+          document.getElementById('cocoa-current-value').innerText = `${formatEuro(valorCocoa)}`;
+          document.getElementById('cocoa-updated').innerText = `Precio manual · act. ${formatFecha(FECHA_ACTUALIZACION_COCOA)}`;
+
+          const profitCocoaEUR = valorCocoa - TOTAL_COMPRA_COCOA_EUR;
+          const profitCocoaPct = (profitCocoaEUR / TOTAL_COMPRA_COCOA_EUR) * 100;
+          const profitCocoaEl = document.getElementById('cocoa-profit');
+          profitCocoaEl.innerText = `${formatEuro(profitCocoaEUR)} (${formatPercent(profitCocoaPct)})`;
+          profitCocoaEl.className = `detail-val ${profitCocoaEUR >= 0 ? 'trend-up' : 'trend-down'}`;
+
+          // Rellenar valores de Café en la interfaz (precio manual)
+          document.getElementById('cafe-etc-price').innerText = `${formatEuro(PRECIO_ACTUAL_CAFE_EUR)}`;
+          document.getElementById('cafe-qty').innerText = `${UNIDADES_CAFE.toLocaleString('es-ES')} ud`;
+          document.getElementById('cafe-buy-price').innerText = `${formatEuro(PRECIO_COMPRA_CAFE)}`;
+          document.getElementById('cafe-current-value').innerText = `${formatEuro(valorCafe)}`;
+          document.getElementById('cafe-updated').innerText = `Precio manual · act. ${formatFecha(FECHA_ACTUALIZACION_CAFE)}`;
+
+          const profitCafeEUR = valorCafe - TOTAL_COMPRA_CAFE_EUR;
+          const profitCafePct = (profitCafeEUR / TOTAL_COMPRA_CAFE_EUR) * 100;
+          const profitCafeEl = document.getElementById('cafe-profit');
+          profitCafeEl.innerText = `${formatEuro(profitCafeEUR)} (${formatPercent(profitCafePct)})`;
+          profitCafeEl.className = `detail-val ${profitCafeEUR >= 0 ? 'trend-up' : 'trend-down'}`;
         }
 
         // Rellenar cabecera de valor total
         document.getElementById('portfolio-value').innerText = formatEuro(valorTotal);
 
-        const gananciaTotalEUR = valorTotal - CAPITAL_INICIAL_TOTAL;
-        const gananciaTotalPct = (gananciaTotalEUR / CAPITAL_INICIAL_TOTAL) * 100;
+        const gananciaTotalEUR = valorTotal - CAPITAL_TOTAL_APORTADO;
+        const gananciaTotalPct = (gananciaTotalEUR / CAPITAL_TOTAL_APORTADO) * 100;
 
         const profitEl = document.getElementById('portfolio-profit');
         let trendClass = 'trend-neutral';
@@ -535,24 +659,29 @@
         dibujarGrafico(valorTotal, fechaActualStr);
 
         // ---- CÁLCULO COMPARATIVO ACTIVO VS BENCHMARK PASIVO (7% TAE) ----
-        const fechaInicio = new Date("2026-05-06");
-        const diffTime = Math.abs(hoy - fechaInicio);
-        const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
-        
-        // Interés compuesto correspondiente a los días transcurridos
-        // tasaDiaria = (1.07)^(1/365.25) - 1
-        const tasaAcumuladaPasiva = Math.pow(1.07, diffDays / 365.25) - 1;
-        const valorPasivoActual = CAPITAL_INICIAL_TOTAL * (1 + tasaAcumuladaPasiva);
-        const gananciaPasivaActualEUR = valorPasivoActual - CAPITAL_INICIAL_TOTAL;
-        
+        // Cada aportación (money-weighted) crece al 7% desde SU PROPIA fecha. Así, si metes
+        // capital nuevo más adelante, no "resetea" ni infla el % que ya llevabas acumulado.
+        const fechaInicio = new Date(APORTACIONES[0].fecha);
+        const diffDays = Math.max(1, Math.ceil((hoy - fechaInicio) / (1000 * 60 * 60 * 24)));
+
+        let valorPasivoActual = 0;
+        APORTACIONES.forEach(aporte => {
+          const fechaAporte = new Date(aporte.fecha);
+          const diasAporte = Math.max(0, (hoy - fechaAporte) / (1000 * 60 * 60 * 24));
+          const tasaAcumulada = Math.pow(1.07, diasAporte / 365.25) - 1;
+          valorPasivoActual += aporte.monto * (1 + tasaAcumulada);
+        });
+        const gananciaPasivaActualEUR = valorPasivoActual - CAPITAL_TOTAL_APORTADO;
+        const gananciaPasivaActualPct = (gananciaPasivaActualEUR / CAPITAL_TOTAL_APORTADO) * 100;
+
         // Comparación (Alpha/Diferencial)
         const diferencialEUR = valorTotal - valorPasivoActual;
         const compEl = document.getElementById('comparison-highlight');
         
         if (diferencialEUR >= 0) {
-          compEl.innerHTML = `🔥 <strong>Estrategia Activa vs. Pasiva:</strong> En <strong>${diffDays} días</strong> de trayectoria, tu cartera acumula un retorno de <span style="color:var(--profit); font-weight:bold;">${formatPercent(gananciaTotalPct)} (${formatEuro(gananciaTotalEUR)})</span>. Una inversión indexada pasiva al 7% TAE habría acumulado un <span style="color:var(--profit); font-weight:600;">${formatPercent(tasaAcumuladaPasiva * 100)} (${formatEuro(gananciaPasivaActualEUR)})</span>. ¡Vas superando al mercado indexado en <span style="color:var(--profit); font-weight:bold;">${formatEuro(diferencialEUR)}</span>!`;
+          compEl.innerHTML = `🔥 <strong>Estrategia Activa vs. Pasiva:</strong> En <strong>${diffDays} días</strong> de trayectoria, tu cartera acumula un retorno de <span style="color:var(--profit); font-weight:bold;">${formatPercent(gananciaTotalPct)} (${formatEuro(gananciaTotalEUR)})</span> sobre los ${formatEuro(CAPITAL_TOTAL_APORTADO)} aportados. Una inversión indexada pasiva al 7% TAE (con las mismas aportaciones, en las mismas fechas) habría acumulado un <span style="color:var(--profit); font-weight:600;">${formatPercent(gananciaPasivaActualPct)} (${formatEuro(gananciaPasivaActualEUR)})</span>. ¡Vas superando al mercado indexado en <span style="color:var(--profit); font-weight:bold;">${formatEuro(diferencialEUR)}</span>!`;
         } else {
-          compEl.innerHTML = `⚠️ <strong>Estrategia Activa vs. Pasiva:</strong> En <strong>${diffDays} días</strong> de trayectoria, tu cartera acumula un retorno de <span style="color:${gananciaTotalEUR >= 0 ? 'var(--profit)' : 'var(--loss)'}; font-weight:bold;">${formatPercent(gananciaTotalPct)} (${formatEuro(gananciaTotalEUR)})</span>. Una inversión indexada pasiva al 7% TAE habría acumulado un <span style="color:var(--profit); font-weight:600;">${formatPercent(tasaAcumuladaPasiva * 100)} (${formatEuro(gananciaPasivaActualEUR)})</span>. Vas por detrás del índice pasivo por <span style="color:var(--loss); font-weight:bold;">${formatEuro(Math.abs(diferencialEUR))}</span>.`;
+          compEl.innerHTML = `⚠️ <strong>Estrategia Activa vs. Pasiva:</strong> En <strong>${diffDays} días</strong> de trayectoria, tu cartera acumula un retorno de <span style="color:${gananciaTotalEUR >= 0 ? 'var(--profit)' : 'var(--loss)'}; font-weight:bold;">${formatPercent(gananciaTotalPct)} (${formatEuro(gananciaTotalEUR)})</span> sobre los ${formatEuro(CAPITAL_TOTAL_APORTADO)} aportados. Una inversión indexada pasiva al 7% TAE (con las mismas aportaciones, en las mismas fechas) habría acumulado un <span style="color:var(--profit); font-weight:600;">${formatPercent(gananciaPasivaActualPct)} (${formatEuro(gananciaPasivaActualEUR)})</span>. Vas por detrás del índice pasivo por <span style="color:var(--loss); font-weight:bold;">${formatEuro(Math.abs(diferencialEUR))}</span>.`;
         }
 
       } catch (error) {
