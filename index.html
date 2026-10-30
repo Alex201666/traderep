@@ -31,19 +31,19 @@
     const PRECIO_COMPRA_ORO_ETC = 75.95;    // Precio de compra en EUR por unidad
     const TOTAL_COMPRA_ORO_EUR = 5225.00;   // Monto total invertido en Oro
 
-    const UNIDADES_PLATA_ETC = 82.88;       // Unidades de iShares Physical Silver
-    const PRECIO_COMPRA_PLATA_ETC = 63.34;  // Precio de compra en EUR por unidad
-    const TOTAL_COMPRA_PLATA_EUR = 5251.00;  // Monto total invertido en Plata
+    const UNIDADES_PLATA_ETC = 125.182;       // Unidades de iShares Physical Silver
+    const PRECIO_COMPRA_PLATA_ETC = 61.36665;  // Precio de compra en EUR por unidad
+    const TOTAL_COMPRA_PLATA_EUR = 7680.83;  // Monto total invertido en Plata
 
     // 2b. Transacciones activas actuales - Cocoa y Café (compradas el 25 de agosto):
     // OJO: a diferencia del oro/plata, no hay ninguna fuente de precio en vivo gratuita para
     // estos dos ETCs (cotizan en Londres/Xetra). Actualiza tú mismo el precio y la fecha de
     // abajo cada vez que mires la cotización real en Trade Republic.
-    const UNIDADES_COCOA = 311.75;              // Unidades de Cocoa USD
+    const UNIDADES_COCOA = 0; // Posición vendida el 30 de octubre de 2026              // Unidades de Cocoa USD
     const PRECIO_COMPRA_COCOA = 8.019;          // Precio de compra en EUR por unidad
     const TOTAL_COMPRA_COCOA_EUR = 2499.92;     // Monto total invertido en Cocoa
-    const PRECIO_ACTUAL_COCOA_EUR = 9.020;      // <-- ACTUALIZA ESTO A MANO
-    const FECHA_ACTUALIZACION_COCOA = "2026-08-25"; // <-- y esto (YYYY-MM-DD)
+    const PRECIO_ACTUAL_COCOA_EUR = 7.801; // Precio de venta      // <-- ACTUALIZA ESTO A MANO
+    const FECHA_ACTUALIZACION_COCOA = "2026-10-30"; // <-- y esto (YYYY-MM-DD)
 
     const UNIDADES_CAFE = 37.88;                // Unidades de WisdomTree Coffee ETC USD
     const PRECIO_COMPRA_CAFE = 64.91;           // Precio de compra en EUR por unidad
@@ -65,7 +65,8 @@
     const HISTORIAL_GRAFICO = [
       { fecha: "2026-05-06", valor: 10000.00 }, // Inversión Inicial
       { fecha: "2026-05-13", valor: 10443.00 }, // Venta y paso a efectivo
-      { fecha: "2026-05-15", valor: 10476.00 }  // Reinversión activa
+      { fecha: "2026-05-15", valor: 10476.00 }, // Reinversión activa
+      { fecha: "2026-10-30", valor: 15365.79 }  // Movimiento de octubre
     ];
   </script>
   <!-- ================================================================= -->
@@ -211,7 +212,7 @@
 
     <!-- Notas del inversor -->
     <section class="glass-card">
-      <h2 class="notes-title"><i data-lucide="message-square" style="color: var(--gold)"></i> Notas del Inversor actualizado a 25 de Agosto de 2026</h2>
+      <h2 class="notes-title"><i data-lucide="message-square" style="color: var(--gold)"></i> Notas del Inversor actualizado a 30 de octubre de 2026</h2>
       <div class="notes-text">
         <!-- ================================================================= -->
         <!-- NOTAS / COMENTARIOS: Modifica este texto libremente de aquí abajo -->
@@ -219,7 +220,7 @@
        Hola grupo, aquí podéis ver el estado de nuestra cartera en Trade Republic. 
        <br><br>Comenzamos el 6 de mayo de 2026 aportando 10.000€ en total donde invertí Oro, plata y venia con una posición de unos 1.000 euros en palantir.
        <br><br>El 13 de mayo vendimos todas las posiciones con una rentabilidad de +443€ de esos 10.000 iniciales, y el 15 de mayo volvimos a reinvertir el capital en oro y plata física aprovechando una corrección del mercado que preveia.
-       <br><br>Hoy, 25 de agosto de 2026, he metido capital nuevo (no toqué el oro ni la plata) para diversificar: 2.499,92€ en Cocoa USD y 2.458,79€ en WisdomTree Coffee ETC USD.
+       <br><br>El 25 de agosto de 2026 metí capital nuevo (sin tocar el oro ni la plata) para diversificar: 2.499,92€ en Cocoa USD y 2.458,79€ en WisdomTree Coffee ETC USD.
        <br><br>La web se actualiza con los precios internacionales del mercado y muestra cómo fluctúa la cartera minuto a minuto. Ojo: el precio de Cocoa y Café los actualizo yo a mano de vez en cuando (no hay una fuente gratuita en vivo para esos dos), veréis la fecha de la última actualización en su tarjeta.
        <br><br>La idea es batir al interés compuesto, al final hay un par de tablas con y sin aportaciones mensuales teniendo en cuenta el interés compuesto anual del 7%
         <!-- ================================================================= -->
@@ -280,10 +281,24 @@
               <td><strong>4.958,71 €</strong></td>
               <td>Capital Nuevo (diversificación)</td>
             </tr>
+            <tr style="border-bottom: 1px solid var(--border-color); height: 3.5rem;">
+              <td><strong>30 Oct 2026</strong></td>
+              <td><span style="color: var(--cash); background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Venta</span></td>
+              <td style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.3;">Cocoa USD: 311,759 ud @ 7,801€ · posición cerrada</td>
+              <td><strong>2.431,00 €</strong></td>
+              <td style="color: var(--loss, #ef4444); font-weight: 600;">−68,92 € (aprox. −70 €)</td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border-color); height: 3.5rem;">
+              <td><strong>30 Oct 2026</strong></td>
+              <td><span style="color: var(--profit); background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">Compra</span></td>
+              <td style="color: var(--text-secondary); font-size: 0.82rem; line-height: 1.3;">Plata ETC: 42,302 ud @ 57,44€ (2.429,83€)</td>
+              <td><strong>2.429,83 €</strong></td>
+              <td>Reinversión de la venta de Cocoa</td>
+            </tr>
             <tr style="height: 3.5rem;">
-              <td><strong>25 Ago 2026</strong></td>
+              <td><strong>30 Oct 2026</strong></td>
               <td><span style="color: var(--gold); background: rgba(212, 175, 55, 0.1); border: 1px solid rgba(212, 175, 55, 0.2); padding: 0.25rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;">En cartera</span></td>
-              <td style="color: var(--text-secondary); font-size: 0.82rem;">Oro: 68,78 ud / Plata: 82,88 ud / Cocoa: 311,75 ud / Café: 37,88 ud</td>
+              <td style="color: var(--text-secondary); font-size: 0.82rem;">Oro: 68,78 ud / Plata: 125,182 ud / Cocoa: vendida / Café: 37,88 ud</td>
               <td><strong id="history-total-value">0,00 €</strong></td>
               <td style="color: var(--profit); font-weight: 600;" id="history-total-profit">+0,00 € (+0,00%)</td>
             </tr>
@@ -597,7 +612,7 @@
           document.getElementById('cocoa-qty').innerText = `${UNIDADES_COCOA.toLocaleString('es-ES')} ud`;
           document.getElementById('cocoa-buy-price').innerText = `${formatEuro(PRECIO_COMPRA_COCOA)}`;
           document.getElementById('cocoa-current-value').innerText = `${formatEuro(valorCocoa)}`;
-          document.getElementById('cocoa-updated').innerText = `Precio manual · act. ${formatFecha(FECHA_ACTUALIZACION_COCOA)}`;
+          document.getElementById('cocoa-updated').innerText = UNIDADES_COCOA === 0 ? 'Posición vendida · 30/10/2026' : `Precio manual · act. ${formatFecha(FECHA_ACTUALIZACION_COCOA)}`;
 
           const profitCocoaEUR = valorCocoa - TOTAL_COMPRA_COCOA_EUR;
           const profitCocoaPct = (profitCocoaEUR / TOTAL_COMPRA_COCOA_EUR) * 100;
